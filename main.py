@@ -55,13 +55,12 @@ def main(_):
         train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 
       with tf.name_scope("acc"):
-        init_op = tf.initialize_all_variables()
         correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
     sv = tf.train.Supervisor(is_chief=(FLAGS.task_index == 0),
                              global_step=global_step,
-                             init_op=init_op,
+                             logdir="/tmp/logdir",
                              )
 
     with sv.prepare_or_wait_for_session(server.target) as sess:
