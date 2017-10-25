@@ -16,8 +16,8 @@ function main() {
   const src = fs.readFileSync(srcPath, { encoding: 'utf8' });
 
   const infra = kelda.baseInfrastructure();
-  const nWorkerMachines = infra.machines.filter(m => m.role == 'Worker').length;
-  const containers = makeContainers(src, 1, nWorkerMachines-1);
+  const nWorkerMachines = infra.machines.filter(m => m.role === 'Worker').length;
+  const containers = makeContainers(src, 1, nWorkerMachines - 1);
   containers.forEach((c) => {
     c.deploy(infra);
   });
@@ -55,6 +55,7 @@ function makeContainers(jobSource, nPs, nWorker) {
   // container does not exit. This is currently necessary because Kelda doesn't
   // have a concept of one-off jobs.
   allContainers.forEach((c) => {
+    // eslint-disable-next-line no-param-reassign
     c.command = ['bash', '-c', `${c.command.join(' ')} && tail -f /dev/null`];
   });
 
@@ -66,7 +67,7 @@ function makeContainers(jobSource, nPs, nWorker) {
 
 function makeJobContainers(jobSource, jobName, n) {
   const containers = [];
-  for (let i = 0 ; i < n ; i += 1) {
+  for (let i = 0; i < n; i += 1) {
     containers.push(new kelda.Container(jobName, 'keldaio/tensorflow', {
       command: ['python', '/usr/src/app/main.py',
         '--job_name', jobName, '--task_index', i.toString()],
@@ -87,7 +88,7 @@ function makeJobContainers(jobSource, jobName, n) {
  * @returns {string}
  */
 function tensorflowHostsString(containers) {
-  return containers.map((c) => `${c.getHostname()}:${tensorflowPort}`).join(',');
+  return containers.map(c => `${c.getHostname()}:${tensorflowPort}`).join(',');
 }
 
 main();

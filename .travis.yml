@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+    - "6.9.0"
+    - "8.5.0"
+
+install:
+    - npm install .
+    - curl -sL -o ./kelda https://github.com/kelda/kelda/releases/download/dev/kelda_linux
+        && chmod +x ./kelda
+
+before_script:
+    - npm install -g gulp-cli
+    - mkdir -p ~/.kelda/infra/ && cp ./testInfra.js ~/.kelda/infra/default.js
+
+script:
+    - gulp lint
+    - ./kelda inspect ./tensorFlow.js graphviz
+
+notifications:
+    slack:
+        secure: JbZl9zsy5Ge2EkxACEgXHDAcILNaWS2aAttIIcKw/pF9W7mBBeCRZ7qfJTH8XCyC1aYMCwSMlUH48K2aVdsyDwy6QaakFVcN7TmU7qKl3RSeGfHoEiv5N5Dr7Mv70v9NVcK+jjI/fUncVAx9fdYRcTwHjqRsFdARue9D9wDgsqJnGCLGKUzb+5YBLrheCwsWuV2SRNLK9UHpSOIcaO19jtXFY/u+aGgrKvRvx9x2jsCntE7M7kQsfYsuyLx8gGzSZkGMUiBFk2Luh2FGhNvB0lu6uHrIw4w/WnIAOZU5ucpyLK4zMj6iAjbfaEfgT0xmsrGE6m9S4dcPWa40DSQliMjEANNQKUbqnvknyOrCkE52YB+1224b78TOEVFYmynmFQBNmWoFFBsYfI/oh3HiCzKuAgh33GauVH01/m1IDCc4A+lhpTF+IFK3lPn2F5TjWpvSQLSRgB8sqzGDlUb804ttdAB7Sm3K+DMJQTbUV6zDu4grg4dQLrVKY8QpKAXA1B4j3s3t/YFXcU6/p8K0TfyViCkSa3N+tK1TlnEJAt2X/rHoMQncygLWvPiNfx6r6FW6bbq+4Nd7XzLaMioi9dgJ2RYTIv8HUortuEJjGj/zg5ThcMb/y6KxRI/DS86d70nAPjrPGUapVPLD0BbeBX3a7Q9607WA0ORse3CxbwM=
