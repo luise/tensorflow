@@ -68,7 +68,8 @@ def main(_):
         batch_xs, batch_ys = mnist.train.next_batch(100)
         sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 
-      print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
+      print("MNIST accuracy:",
+        sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
