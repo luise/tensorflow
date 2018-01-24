@@ -41,7 +41,7 @@ function makeContainers(jobSource, nPs, nWorker) {
   const workerContainers = makeJobContainers(jobSource, 'worker', nWorker);
 
   // Let the worker containers fetch the MNIST dataset over HTTPS.
-  kelda.allow(workerContainers, kelda.publicInternet, 443);
+  kelda.allowTraffic(workerContainers, kelda.publicInternet, 443);
 
   // Setup the ps_hosts and worker_hosts arguments on all containers.
   const allContainers = psContainers.concat(workerContainers);
@@ -60,7 +60,7 @@ function makeContainers(jobSource, nPs, nWorker) {
   });
 
   // Allow the cluster to communicate internally.
-  kelda.allow(allContainers, allContainers, tensorflowPort);
+  kelda.allowTraffic(allContainers, allContainers, tensorflowPort);
 
   return allContainers;
 }
